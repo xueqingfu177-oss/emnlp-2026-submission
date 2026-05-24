@@ -1,0 +1,13 @@
+# API & Utilities
+dashscope>=1.20.0
+tqdm>=4.66.0
+numpy>=1.24.0
+
+# NLP Text Processing & Metrics
+nltk>=3.8.1
+spacy>=3.7.0
+jieba>=0.42.1
+
+# Evaluation
+rouge>=1.0.1
+rouge-score>=0.1.2
