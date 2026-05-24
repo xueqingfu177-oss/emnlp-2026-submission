@@ -4,7 +4,7 @@ This repository contains the official anonymous implementation and datasets for 
 
 Our proposed framework, **Claim-DER**, tackles two critical failures in large language models for patent drafting: missing deep-tail technical details and broken claim dependencies. It separates long-text detail gathering from structure planning via a collaborative Drafter-Examiner-Reviser pipeline.
 
-## �� Repository Structure
+## 📂 Repository Structure
 
 The project is organized to ensure seamless reproducibility:
 
@@ -25,7 +25,7 @@ The project is organized to ensure seamless reproducibility:
 └── requirements.txt
 ```
 
-## ��️ Environment Setup
+## （2） Environment Setup
 
 We recommend using **Python 3.9+** for optimal compatibility. To set up the environment, please run:
 
@@ -44,7 +44,7 @@ Our framework utilizes the DashScope API for generating claims and evaluating vi
 export DASHSCOPE_API_KEY="your_api_key_here"
 ```
 
-## �� Reproducing the Results
+## （3） Reproducing the Results
 
 The inference pipeline is strictly aligned with the three-stage architecture of Claim-DER.
 
