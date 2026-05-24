@@ -25,7 +25,7 @@ The project is organized to ensure seamless reproducibility:
 └── requirements.txt
 ```
 
-## （2） Environment Setup
+## 🛠️ Environment Setup
 
 We recommend using **Python 3.9+** for optimal compatibility. To set up the environment, please run:
 
@@ -44,7 +44,7 @@ Our framework utilizes the DashScope API for generating claims and evaluating vi
 export DASHSCOPE_API_KEY="your_api_key_here"
 ```
 
-## （3） Reproducing the Results
+## 🚀 Reproducing the Results
 
 The inference pipeline is strictly aligned with the three-stage architecture of Claim-DER.
 
@@ -62,7 +62,7 @@ python src/models/Examiner-Reviser.py
 ```
 *Outputs:* `./data/output-two-agents-chemistry.json`
 
-## �� Evaluation
+## 📊 Evaluation
 
 We provide four comprehensive evaluation scripts corresponding to the metrics discussed in the paper. By default, they evaluate the English (`chemistry`) dataset. You can toggle the `LANGUAGE` flag inside the scripts to evaluate the Chinese (`lithography`) dataset.
 
