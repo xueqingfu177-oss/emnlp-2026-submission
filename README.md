@@ -1,91 +1,43 @@
-# Claim-DER: Multi-Agent Framework for Patent Claim Generation
+# Claim-DER: Patent Claim Generation
 
-This repository contains the official anonymous implementation and datasets for our EMNLP submission: **"Beyond Mere Generation: Graph-Centered Multi-Agent Framework for Patent Claim Generation"**. 
+This repository accompanies the revised Claim-DER experiments. The current reproducibility release uses 1,000 English and 1,000 Chinese patents sampled independently with seed 20260929. The seven-method common-output comparison covers 990 English and 992 Chinese patents; individual metrics report their effective sample sizes.
 
-Our proposed framework, **Claim-DER**, tackles two critical failures in large language models for patent drafting: missing deep-tail technical details and broken claim dependencies. It separates long-text detail gathering from structure planning via a collaborative Drafter-Examiner-Reviser pipeline.
+## Current release
 
-## 📂 Repository Structure
+Download **[Claim-DER-reproducibility-20261003.tar.xz](Claim-DER-reproducibility-20261003.tar.xz)** and follow the commands below. The archive contains the complete revised materials in one directory; it is an XZ-compressed TAR file. [Detailed reproduction instructions](REPRODUCIBILITY.md) and [the archive checksum](SHA256SUMS.txt) are also available separately.
 
-The project is organized to ensure seamless reproducibility:
+```sh
+tar -xf Claim-DER-reproducibility-20261003.tar.xz
+cd claim_der_reproducibility
+python verify_release.py
+python verify_outputs.py
+python rebuild_tables.py --output rebuilt
+```
+
+These commands require Python's standard library and make no model API calls. They verify file integrity and frozen text hashes, verify saved output bindings, and reconstruct seven result-table views with 974 value/denominator checks. See `REPRODUCIBILITY.md` for metric dependencies and explicit instructions for new, paid generation runs.
+
+Archive SHA-256:
 
 ```text
-├── data/
-│   ├── chemistry.json       # Patent-CR dataset (English, Chemistry domain)
-│   └── lithography.json     # Patent-LG-zh dataset (Chinese, Lithography domain)
-├── src/
-│   ├── eval/
-│   │   ├── DAR.py           # Dependency-Aware Regression (DAR) evaluation
-│   │   ├── LLM-as-a-judge.py# N-way peer review via Qwen-Max
-│   │   ├── PAR.py           # Position-Aware Recall (PAR) evaluation
-│   │   └── Rouge.py         # Standard lexical ROUGE metric calculation
-│   └── models/
-│       ├── Drafter.py             # Stage 1: Initial claim tree generation
-│       └── Examiner-Reviser.py    # Stages 2 & 3: Detail extraction & conservative rewriting
-├── README.md
-└── requirements.txt
+7f4f55cea5c963ac990c78f1aa2d5e535c89f81d39357eec9df14a5df375129e
 ```
 
-## 🛠️ Environment Setup
+The archive includes:
 
-We recommend using **Python 3.9+** for optimal compatibility. To set up the environment, please run:
+- The frozen 2,000 disclosures and reference claim sets, sample IDs, text hashes and length-distribution checks.
+- All 24 original output exports: 14 main-method exports and 10 controlled-ablation/draft-only exports.
+- Saved per-patent automatic scores, LLM judge scores, protocols and table reconstruction scripts.
+- Portable ROUGE, PAR, DAR and numbering/reference checks; baseline and controlled-ablation runners with recorded prompts.
+- Compact corrected-ablation stage records and provenance checks. Full private request/checkpoint archives and raw judge response trees are not included.
 
-```bash
-# 1. Install required python packages
-pip install -r requirements.txt
+## Evaluation scope
 
-# 2. Download language models for spaCy (Required for PAR and DAR metrics)
-python -m spacy download en_core_web_sm
-python -m spacy download zh_core_web_sm
-```
+The main metrics are ROUGE recall, position-aware keyword recall (PAR), auxiliary dependency-aware regression (DAR), and five-dimension Qwen-Max judgments. Supplementary materials include ROUGE precision/F1, BERTScore, Qwen3-Max judgments and explicit numbering/reference checks. DAR is sparse for English and is not an overall dependency-validity measure. LLM judgments are identified as model evaluations; independent human expert ratings are not claimed. Historical execution and training-provenance limits are documented in the release.
 
-**API Key Configuration:**
-Our framework utilizes the DashScope API for generating claims and evaluating via LLM-as-a-judge. Please set your API key as an environment variable before running the scripts:
-```bash
-export DASHSCOPE_API_KEY="your_api_key_here"
-```
+## Historical files
 
-## 🚀 Reproducing the Results
+The existing `data/`, `src/` and `requirements.txt` are retained as the initial submission snapshot. **Use the current release above for the revised experiments.** The initial snapshot does not contain the new seven-method comparison or controlled ablation and is not the current reproduction entry point. Its legacy metric handling and Examiner short-circuit behavior are superseded by the release, as detailed in `REPRODUCIBILITY.md`.
 
-The inference pipeline is strictly aligned with the three-stage architecture of Claim-DER.
+## Attribution
 
-### Step 1: Claim Tree Construction (Drafter)
-The Drafter processes the technical disclosure to establish a foundational structural layout.
-```bash
-python src/models/Drafter.py
-```
-*Outputs:* `./data/output-zero-shot-chemistry.json`
-
-### Step 2: Inspection & Completion (Examiner & Reviser)
-The Examiner scans for missing deep-tail features, while the Reviser safely integrates these details without corrupting the initial reference chains.
-```bash
-python src/models/Examiner-Reviser.py
-```
-*Outputs:* `./data/output-two-agents-chemistry.json`
-
-## 📊 Evaluation
-
-We provide four comprehensive evaluation scripts corresponding to the metrics discussed in the paper. By default, they evaluate the English (`chemistry`) dataset. You can toggle the `LANGUAGE` flag inside the scripts to evaluate the Chinese (`lithography`) dataset.
-
-**1. Position-Aware Recall (PAR)**
-To measure the extraction of deep-tail features:
-```bash
-python src/eval/PAR.py
-```
-
-**2. Dependency-Aware Regression (DAR)**
-To precisely measure structural compliance and reference tracking:
-```bash
-python src/eval/DAR.py
-```
-
-**3. ROUGE Recall**
-To quantify lexical coverage:
-```bash
-python src/eval/Rouge.py
-```
-
-**4. LLM-as-a-Judge**
-To conduct an N-way blind peer review using Qwen-Max across 5 expert dimensions (Feature Completeness, Conceptual Clarity, Terminology Consistency, Logical Linkage, Overall Quality):
-```bash
-python src/eval/LLM-as-a-judge.py
-```
+The English collection is derived from Patent-CR; Patent-LG-zh is the self-collected Chinese collection. Self-Refine and PlanGEN are adapted comparison methods. Source collections and third-party dependencies retain their applicable licenses; this release does not assign new rights to those materials.
